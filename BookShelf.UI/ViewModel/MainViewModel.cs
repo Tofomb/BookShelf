@@ -14,35 +14,21 @@ namespace BookShelf.UI.ViewModel
         private Book _selectedBook;
         private IBookDataService _bookDataService;
 
-        public MainViewModel(IBookDataService bookDataService)
+        public MainViewModel(INavigationViewModel navigationViewModel,
+            IBookDetailViewModel bookDetailViewModel)
         {
-            Books = new ObservableCollection<Book>();
-            _bookDataService = bookDataService;
+            NavigationViewModel = navigationViewModel;
+            BookDetailViewModel = bookDetailViewModel;
         }
 
         public async Task LoadAsync()
         {
-            var books = await _bookDataService.GetAllAsync();
-            Books.Clear();
-            foreach (var book in books)
-            {
-                Books.Add(book);
-            }
+            await NavigationViewModel.LoadAsync();
         }
 
-        public ObservableCollection<Book> Books { get; set; }
-       
+        public INavigationViewModel NavigationViewModel { get; }
 
-        public Book SelectedBook
-        {
-            get { return _selectedBook; }
-            set { _selectedBook = value;
-                OnPropertyChanged();
-            }
-            
-        }
-
-       
+        public IBookDetailViewModel BookDetailViewModel { get; }
 
     }
 }

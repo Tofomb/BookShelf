@@ -20,11 +20,11 @@ namespace BookShelf.UI.Data
         }
 
 
-        public async Task<List<Book>> GetAllAsync()
+        public async Task<Book> GetByIdAsync(int bookId)
         {
             using (var ctx = _contextCreator())
             {
-                return await ctx.Books.AsNoTracking().ToListAsync();
+                return await ctx.Books.AsNoTracking().SingleAsync(b=>b.Id == bookId);
             }
         }
     }

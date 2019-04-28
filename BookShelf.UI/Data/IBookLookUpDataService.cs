@@ -4,8 +4,8 @@ using BookShelf.Model;
 
 namespace BookShelf.UI.Data
 {
-    public interface IBookDataService
+    public interface IBookLookUpDataService
     {
-        Task<Book> GetByIdAsync(int bookId);
+        Task<IEnumerable<LookUpItem>> GetBookLookupAsync();
     }
 }
