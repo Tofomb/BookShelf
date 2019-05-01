@@ -21,23 +21,31 @@ namespace BookShelf.UI.ViewModel
         {
             _eventAggregator = eventAggregator;
             _bookLookUpDataService = bookLookUpDataService;
-            Books = new ObservableCollection<LookUpItem>();
+            Books = new ObservableCollection<NavigationItemViewModel>();
+            _eventAggregator.GetEvent<AfterBookSaveEvent>().Subscribe(AfterBookSave);
         }
+
+        private void AfterBookSave(AfterBookSaveEventArgs obj)
+        {
+          var lookUpItem = Books.Single(b => b.Id == obj.Id);
+            lookUpItem.DisplayMember = obj.DisplayMember;
+        }
+
         public async Task LoadAsync()
         {
             var lookUp = await _bookLookUpDataService.GetBookLookupAsync();
             Books.Clear();
             foreach(var item in lookUp)
             {
-                Books.Add(item);
+                Books.Add(new NavigationItemViewModel(item.Id,item.DisplayMember));
             }
         }
 
 
-        public ObservableCollection<LookUpItem> Books { get; }
-        private LookUpItem _selectedBook;
+        public ObservableCollection<NavigationItemViewModel> Books { get; }
+        private NavigationItemViewModel _selectedBook;
 
-        public LookUpItem SelectedBook
+        public NavigationItemViewModel SelectedBook
         { 
             get { return _selectedBook; }
             set {

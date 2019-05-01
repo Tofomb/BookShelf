@@ -27,5 +27,16 @@ namespace BookShelf.UI.Data
                 return await ctx.Books.AsNoTracking().SingleAsync(b=>b.Id == bookId);
             }
         }
+
+        public async Task SaveAsync(Book book)
+        {
+            using (var ctx = _contextCreator())
+            {
+                ctx.Books.Attach(book);
+                ctx.Entry(book).State = EntityState.Modified;
+                await ctx.SaveChangesAsync();
+            }
+            // Här sparar till entityframework
+        }
     }
 }

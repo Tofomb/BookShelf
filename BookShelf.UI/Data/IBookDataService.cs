@@ -7,5 +7,6 @@ namespace BookShelf.UI.Data
     public interface IBookDataService
     {
         Task<Book> GetByIdAsync(int bookId);
+        Task SaveAsync(Book book);
     }
 }
